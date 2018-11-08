@@ -243,7 +243,7 @@ macro_rules! try_ready {
 
             let mut catch_all = codegen::Block::new("_ =>");
             catch_all
-                .line(&format!("{}::ResponseFuture {{ kind: Err(grpc::Status::UNIMPLEMENTED) }}",
+                .line(&format!("{}::ResponseFuture {{ kind: Err(grpc::Status::with_code(grpc::Code::Unimplemented)) }}",
                                lower_name));
 
             route_block.push_block(catch_all);
@@ -392,9 +392,7 @@ macro_rules! try_ready {
 
         let mut poll_trailers_catch_all = codegen::Block::new("Err(ref status) =>");
         poll_trailers_catch_all
-            .line("let mut map = http::HeaderMap::new();")
-            .line("map.insert(\"grpc-status\", status.to_header_value());")
-            .line("Ok(Some(map).into())")
+            .line("status.to_header_map().map(Some).map(Into::into)")
             ;
 
         poll_trailers_block.push_block(poll_trailers_catch_all);

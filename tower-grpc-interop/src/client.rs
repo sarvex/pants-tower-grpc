@@ -545,7 +545,7 @@ impl TestClients {
                     "call must fail with unknown status code",
                     match &result {
                         Err(Grpc(status, _)) =>
-                            status.code() == tower_grpc::Status::UNKNOWN.code(),
+                            status.code() == tower_grpc::Code::Unknown,
                         _ => false,
                     },
                     format!("result={:?}", result)
@@ -604,7 +604,7 @@ impl TestClients {
                     "call must fail with unimplemented status code",
                     match &result {
                         Err(Grpc(status, _)) =>
-                            status.code() == tower_grpc::Status::UNIMPLEMENTED.code(),
+                            status.code() == tower_grpc::Code::Unimplemented,
                         _ => false,
                     },
                     format!("result={:?}", result)
@@ -623,7 +623,7 @@ impl TestClients {
                     "call must fail with unimplemented status code",
                     match &result {
                         Err(Grpc(status, _)) =>
-                            status.code() == tower_grpc::Status::UNIMPLEMENTED.code(),
+                            status.code() == tower_grpc::Code::Unimplemented,
                         _ => false,
                     },
                     format!("result={:?}", result)
